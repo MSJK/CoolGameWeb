@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 app.use(express.static('public'));
 
 var gameState = {
-  stage: 'game',
+  stage: 'waiting',
   store: [
     {name: 'Screen Shake (2 seconds)', id: 'screen-shake', pool: 0, cost: 500},
     {name: 'Speed Up (15 seconds)', id: 'speed-up', pool: 0, cost: 1000}
