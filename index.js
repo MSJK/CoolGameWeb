@@ -81,12 +81,15 @@ io.on('connection', function (socket) {
   });
 
   socket.on('start game', function () {
+    console.log('Received start game request');
     if (gameState.stage !== 'waiting')
       return;
-    
+
     host = socket;
     gameState.stage = 'game';
     io.emit('game state', buildClientState());
+
+    console.log('Game started');
   });
 
   socket.emit('game state', buildClientState(socket));
