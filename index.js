@@ -81,6 +81,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('start game', function () {
+    if (gameState.stage !== 'waiting')
+      return;
+    
     host = socket;
     gameState.stage = 'game';
     io.emit('game state', buildClientState());
