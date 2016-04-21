@@ -60,6 +60,12 @@ define('game', ['templates'], function (templates) {
           templates.use('login');
         });
 
+        socket.on('game ended', function () {
+          console.log('Game ended');
+          toastr.warning('The game lobby was closed.');
+          socket.disconnect();
+        });
+
         socket.on('unknown game', function (roomCode) {
           console.error('Unknown game ' + roomCode);
           socket.disconnect();

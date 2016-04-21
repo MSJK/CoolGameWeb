@@ -213,6 +213,10 @@ module.exports = function (io) {
           console.log('Added to pool for item ' + itemId + ' in game ' + game.roomCode);
         }
 
+        socket.emit('points update', {
+          roomCode: game.roomCode,
+          points: player.points
+        });
         sendGameState(io.to(gameRoom(game)), game);
 
         return true;
