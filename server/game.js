@@ -289,6 +289,33 @@ module.exports = function (io) {
       return true;
     },
 
+    addPoints: function (socket, roomCode, amount) {
+      var game = getGame(roomCode);
+      if (!game) {
+        socket.emit('unknown game', roomCode);
+        return false;
+      }
+
+      if (game.host !== socket.id) {
+        socket.emit('bad command', roomCode);
+        return false;
+      }
+
+      if (typeof amount !== 'number') {
+        socket.emit('bad command', roomCode);
+        return false;
+      }
+
+      game.players.forEach(function (p) {
+        p.points += amount;
+        var ps = io.sockets.connected[p.id];
+        if (ps)
+          ps.emit('points update', {roomCode: game.roomCode, points: p.points});
+      });
+
+      console.log('Added ' + amount + ' points to all players in ' + roomCode);
+    },
+
     gameRoom: gameRoom,
     getGame: getGame,
     getGameByHostId: getGameByHostId

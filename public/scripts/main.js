@@ -6,5 +6,7 @@ requirejs.config({
 });
 
 requirejs(['polyfill', 'templates'], function (polyfill, templates) {
+  toastr.options.positionClass = "toast-bottom-right";
+  
   templates.use('login');
 });

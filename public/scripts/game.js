@@ -13,11 +13,15 @@ define('game', ['templates'], function (templates) {
         return false;
 
       case 'waiting':
-        templates.use('waiting', {playerCount: game.players});
+        templates.use('waiting', {
+          roomCode: game.roomCode,
+          playerCount: game.players
+        });
         break;
 
       case 'playing':
         templates.use('store', {
+          roomCode: game.roomCode,
           items: game.state.store,
           points: player.points,
           playerCount: game.players

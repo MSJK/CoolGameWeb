@@ -44,6 +44,10 @@ io.on('connection', function (socket) {
   socket.on('remove item', function (data) {
     games.removeItem(socket, data.roomCode, data.itemId);
   });
+
+  socket.on('add points', function (data) {
+    games.addPoints(socket, data.roomCode, data.amount);
+  });
 });
 
 var port = process.env.PORT || 3000;

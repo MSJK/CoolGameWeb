@@ -12,7 +12,7 @@
 <div class="container">
     <div class="row text-center">
         <h1>Store</h1>
-        <h4>You have {{points}} points to spend. Tap an item to put 100 points towards it.</h4>
+        <h3><strong>{{points}}</strong> Points</h3>
     </div>
     <div id="store-container">
       {{#each items as |item|}}
@@ -26,6 +26,7 @@
     </div>
     <div class="row">
         <p><small>{{playerCount}} players connected</small></p>
+        <p><small>Room Code: <strong>{{roomCode}}</strong></small></p>
     </div>
 </div>
 
