@@ -251,7 +251,7 @@ module.exports = function (io) {
       };
 
       if (!newItem.id || !newItem.name || typeof newItem.price !== 'number' ||
-        game.state.store.find(function (i) {return i.id === itemId;})) {
+        game.state.store.find(function (i) {return i.id === newItem.id;})) {
         socket.emit('bad command', roomCode);
         return false;
       }
