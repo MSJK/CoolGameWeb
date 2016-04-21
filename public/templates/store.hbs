@@ -1,0 +1,40 @@
+<style type="text/css">
+    .store-item {
+        background-color: green;
+        color: white;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="row text-center">
+        <h1>Store</h1>
+        <h4>You have {{points}} points to spend. Tap an item to put 100 points towards it.</h4>
+    </div>
+    <div id="store-container">
+      {{#each items as |item|}}
+          <div class="row store-item" data-item-id="{{item.id}}">
+              <div class="col-sm-12">
+                  <h4>{{item.name}}</h4>
+                  <span class="pull-right">{{item.pool}} / {{item.price}}</span>
+              </div>
+          </div>
+      {{/each}}
+    </div>
+    <div class="row">
+        <p><small>{{playerCount}} players connected</small></p>
+    </div>
+</div>
+
+<script>
+    requirejs(['game'], function (game) {
+        $('#store-container .store-item').click(function () {
+            var itemId = $(this).data('item-id');
+            console.log('Adding to pool for ' + itemId);
+            game.buyItem(itemId);
+        });
+    });
+</script>

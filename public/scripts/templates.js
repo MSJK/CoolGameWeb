@@ -20,7 +20,7 @@ define('templates', ['handlebars'], function (handlebars) {
   };
 
   var use = function (path, data, cb, element) {
-    return get(path).then(function (template) {
+    return get('/templates/' + path + '.hbs').then(function (template) {
       var html = template(data);
       if (!element) {
         element = $('#app');

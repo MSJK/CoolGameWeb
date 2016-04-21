@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var games = require('./game');
+var games = require('./game')(io);
 
 app.use(express.static('public'));
 
@@ -11,9 +11,9 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  console.log('User connected from ' + socket.request.connection.remoteAddress);
+  console.log('User ' + socket.id + ' connected from ' + socket.request.connection.remoteAddress);
   socket.on('disconnect', function () {
-    console.log('User disconnected from ' + socket.request.connection.remoteAddress);
+    console.log('User ' + socket.id + ' disconnected from ' + socket.request.connection.remoteAddress);
 
     var game = games.getGameByHostId(socket.id);
     if (game) {
@@ -33,8 +33,16 @@ io.on('connection', function (socket) {
     games.startGame(socket, roomCode);
   });
 
-  socket.on('buy item', function (roomCode, itemId) {
-    games.buyItem(socket, roomCode, itemId);
+  socket.on('buy item', function (data) {
+    games.buyItem(socket, data.roomCode, data.itemId);
+  });
+
+  socket.on('add item', function (data) {
+    games.addItem(socket, data.roomCode, data.item);
+  });
+
+  socket.on('remove item', function (data) {
+    games.removeItem(socket, data.roomCode, data.itemId);
   });
 });
 
