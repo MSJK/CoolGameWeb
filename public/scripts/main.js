@@ -5,6 +5,6 @@ requirejs.config({
   }
 });
 
-requirejs(['polyfill', 'templates'], function (templates) {
+requirejs(['polyfill', 'templates'], function (polyfill, templates) {
   templates.use('login');
 });

@@ -1,4 +1,4 @@
-requirejs([], function () {
+define('polyfill', [], function () {
   if (!Array.prototype.find) {
     Array.prototype.find = function(predicate) {
       if (this === null) {
@@ -21,4 +21,6 @@ requirejs([], function () {
       return undefined;
     };
   }
+
+  return true;
 });
