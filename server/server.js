@@ -30,8 +30,8 @@ io.on('connection', function (socket) {
     games.joinGame(socket, roomCode);
   });
 
-  socket.on('start game', function (roomCode) {
-    games.startGame(socket, roomCode);
+  socket.on('start game', function (data) {
+    games.startGame(socket, data.roomCode);
   });
 
   socket.on('buy item', function (data) {
