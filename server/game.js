@@ -210,7 +210,7 @@ module.exports = function (io) {
         item.pool += 100;
         if (item.pool >= item.price) {
           item.pool -= item.price;
-          socket.emit('item bought', item);
+          io.to(gameRoom(game)).emit('item bought', item);
           console.log('Purchased item ' + itemId + ' in game ' + game.roomCode);
         }
         else {
