@@ -31,10 +31,12 @@
 </div>
 
 <script>
-    requirejs(['game'], function (game) {
+    $(function () {
+        var game = require('game');
         $('#store-container .store-item').click(function () {
             var itemId = $(this).data('item-id');
             console.log('Adding to pool for ' + itemId);
+            console.log(game.state());
             game.buyItem(itemId);
         });
     });
