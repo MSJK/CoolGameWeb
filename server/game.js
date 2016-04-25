@@ -162,11 +162,13 @@ module.exports = function (io) {
 
       if (socket.id !== game.host) {
         socket.emit('bad command', roomCode);
+        console.error('cannot startGame from non-host socket ' + socket.id + ' for ' + roomCode);
         return false;
       }
 
       if (game.state.stage !== 'waiting') {
         socket.emit('bad command', roomCode);
+        console.error('cannot startGame as ' + roomCode + ' is not in the waiting state');
         return false;
       }
 
@@ -192,12 +194,14 @@ module.exports = function (io) {
       });
       if (!player) {
         socket.emit('bad command', roomCode);
+        console.error(socket.id + ' was not found as a player for ' + roomCode + ', cannot buyItem');
         return false;
       }
 
       var item = game.state.store.find(function (i) {return i.id === itemId;});
       if (!item) {
         socket.emit('bad command', roomCode);
+        console.error('Unknown item ' + itemId + ' for ' + roomCode + ', cannot buyItem')
         return false;
       }
 
@@ -235,6 +239,7 @@ module.exports = function (io) {
 
       if (game.host !== socket.id) {
         socket.emit('bad command', roomCode);
+        console.error('cannot addItem from non-host socket ' + socket.id + ' for ' + roomCode);
         return false;
       }
 
@@ -272,6 +277,7 @@ module.exports = function (io) {
 
       if (game.host !== socket.id) {
         socket.emit('bad command', roomCode);
+        console.error('cannot removeItem from non-host socket ' + socket.id + ' for ' + roomCode);
         return false;
       }
 
@@ -298,6 +304,7 @@ module.exports = function (io) {
 
       if (game.host !== socket.id) {
         socket.emit('bad command', roomCode);
+        console.error('cannot addPoints from non-host socket ' + socket.id + ' for ' + roomCode);
         return false;
       }
 
