@@ -245,6 +245,7 @@ module.exports = function (io) {
 
       if (!item) {
         socket.emit('bad command', roomCode);
+        console.error('No item specified when using addItem for ' + roomCode);
         return false;
       }
 
@@ -258,6 +259,8 @@ module.exports = function (io) {
       if (!newItem.id || !newItem.name || typeof newItem.price !== 'number' ||
         game.state.store.find(function (i) {return i.id === newItem.id;})) {
         socket.emit('bad command', roomCode);
+        console.error('Bad item for ' + roomCode);
+        console.error(newItem);
         return false;
       }
 
