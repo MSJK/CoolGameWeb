@@ -16,8 +16,9 @@ io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' disconnected from ' + socket.request.connection.remoteAddress);
 
     var game = games.getGameByHostId(socket.id);
-    if (game) {
+    while(game) {
       games.destroyGame(game.roomCode);
+      game = games.getGameByHostId(socket.id);
     }
   });
 
