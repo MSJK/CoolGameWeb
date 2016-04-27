@@ -209,9 +209,10 @@ module.exports = function (io) {
         return false;
       }
 
-      if (player.points >= 100) {
-        player.points -= 100;
-        item.pool += 100;
+      var amt = Math.min(player.points, item.price - item.pool);
+      if (player.points >= amt && amt > 0) {
+        player.points -= amt;
+        item.pool += amt;
         if (item.pool >= item.price) {
           item.pool -= item.price;
           io.to(gameRoom(game)).emit('item bought', item);
