@@ -1,10 +1,17 @@
 var randomstring = require('randomstring');
 
+// This is split between all users
+var pointsPerSecond = 50;
+
 module.exports = function (io) {
   var games = {};
 
   function generateRoomCode() {
     return randomstring.generate({length: 4, charset: 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789'});
+  }
+
+  function generateHostCode() {
+    return randomstring.generate({length: 8, charset: 'alphanumeric'});
   }
 
   function getGame(roomCode) {
@@ -50,8 +57,9 @@ module.exports = function (io) {
       if (game.state.stage !== 'playing')
         return;
 
+      var amt = Math.round(pointsPerSecond / game.players.length);
       game.players.forEach(function (p) {
-        p.points += 20;
+        p.points += amt;
         var socket = io.sockets.connected[p.id];
         if (socket)
           socket.emit('points update', {
@@ -59,7 +67,7 @@ module.exports = function (io) {
             points: p.points
           });
       });
-      setTimeout(loop, 2 * 1000);
+      setTimeout(loop, 1000);
     };
 
     checkPlayers(game);
@@ -72,7 +80,7 @@ module.exports = function (io) {
         });
     });
 
-    setTimeout(loop, 2 * 1000);
+    setTimeout(loop, 1000);
   }
 
   function gameRoom(game) {
@@ -93,6 +101,7 @@ module.exports = function (io) {
           store: []
         },
         host: host.id,
+        hostCode: generateHostCode(),
         players: []
       };
 
@@ -101,9 +110,26 @@ module.exports = function (io) {
 
       console.log('Created game ' + roomCode);
 
-      host.emit('game created', roomCode);
+      host.emit('game created', {roomCode: roomCode, hostCode: game.hostCode});
 
       return game;
+    },
+
+    reconnectGame: function (socket, roomCode, hostCode) {
+      var game = getGame(roomCode);
+      if (!game) {
+        socket.emit('unknown game', roomCode);
+        return false;
+      }
+
+      if (hostCode !== game.hostCode) {
+        socket.emit('bad command', roomCode);
+        console.log('Bad host code ' + hostCode + ' for ' + roomCode + ', expected ' + game.hostCode);
+        return false;
+      }
+
+      game.host = socket.id;
+      sendGameState(socket, game);
     },
 
     destroyGame: function (roomCode) {
@@ -201,7 +227,7 @@ module.exports = function (io) {
       var item = game.state.store.find(function (i) {return i.id === itemId;});
       if (!item) {
         socket.emit('bad command', roomCode);
-        console.error('Unknown item ' + itemId + ' for ' + roomCode + ', cannot buyItem')
+        console.error('Unknown item ' + itemId + ' for ' + roomCode + ', cannot buyItem');
         return false;
       }
 
