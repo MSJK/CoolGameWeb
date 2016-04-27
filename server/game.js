@@ -189,11 +189,15 @@ module.exports = function (io) {
         return false;
       }
 
-      if (game.state.stage !== 'waiting') {
+      if (game.state.stage !== 'waiting' && game.state.stage !== 'gameover') {
         socket.emit('bad command', roomCode);
-        console.error('cannot startGame as ' + roomCode + ' is not in the waiting state');
+        console.error('cannot startGame as ' + roomCode + ' is not in the waiting or gameover state');
         return false;
       }
+
+      game.players.forEach(function (p) {
+        p.points = 0;
+      });
 
       game.state.stage = 'playing';
       io.to(gameRoom(game)).emit('game started', roomCode);
