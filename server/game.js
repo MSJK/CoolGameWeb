@@ -1,7 +1,7 @@
 var randomstring = require('randomstring');
 
 // This is split between all users
-var pointsPerSecond = 50;
+var pointsPerSecond = 30;
 
 module.exports = function (io) {
   var games = {};
@@ -53,7 +53,7 @@ module.exports = function (io) {
       if (game.state.stage !== 'playing')
         return;
 
-      var amt = Math.round(pointsPerSecond / game.players.length);
+      var amt = Math.ceil(pointsPerSecond / game.players.length);
       game.players.forEach(function (p) {
         p.points += amt;
         var socket = io.sockets.connected[p.id];
