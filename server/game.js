@@ -10,10 +10,6 @@ module.exports = function (io) {
     return randomstring.generate({length: 4, charset: 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789'});
   }
 
-  function generateHostCode() {
-    return randomstring.generate({length: 8, charset: 'alphanumeric'});
-  }
-
   function getGame(roomCode) {
     return games[roomCode];
   }
@@ -101,7 +97,6 @@ module.exports = function (io) {
           store: []
         },
         host: host.id,
-        hostCode: generateHostCode(),
         players: []
       };
 
@@ -110,26 +105,9 @@ module.exports = function (io) {
 
       console.log('Created game ' + roomCode);
 
-      host.emit('game created', {roomCode: roomCode, hostCode: game.hostCode});
+      host.emit('game created', roomCode);
 
       return game;
-    },
-
-    reconnectGame: function (socket, roomCode, hostCode) {
-      var game = getGame(roomCode);
-      if (!game) {
-        socket.emit('unknown game', roomCode);
-        return false;
-      }
-
-      if (hostCode !== game.hostCode) {
-        socket.emit('bad command', roomCode);
-        console.log('Bad host code ' + hostCode + ' for ' + roomCode + ', expected ' + game.hostCode);
-        return false;
-      }
-
-      game.host = socket.id;
-      sendGameState(socket, game);
     },
 
     destroyGame: function (roomCode) {
