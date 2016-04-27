@@ -135,6 +135,25 @@ module.exports = function (io) {
       delete games[roomCode];
     },
 
+    gameOver: function (socket, roomCode) {
+      var game = getGame(roomCode);
+      if (!game) {
+        socket.emit('unknown game', roomCode);
+        return false;
+      }
+
+      if (socket.id !== game.host) {
+        socket.emit('bad command', roomCode);
+        console.error('cannot gameOver from non-host socket ' + socket.id + ' for ' + roomCode);
+        return false;
+      }
+
+      console.log(roomCode + ' game-over\'d')
+      game.state.stage = 'gameover';
+      sendGameState(io.to(gameRoom(game)), game);
+      return true;
+    },
+
     joinGame: function (socket, roomCode) {
       var game = getGame(roomCode);
       if (!game) {

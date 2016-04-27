@@ -27,6 +27,12 @@ define('game', ['templates'], function (templates) {
           playerCount: game.players
         });
         break;
+
+      case 'gameover':
+        templates.use('gameover', {
+          playerCount: game.players
+        });
+        break;
     }
 
     return true;

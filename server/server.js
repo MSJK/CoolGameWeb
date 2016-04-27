@@ -34,6 +34,10 @@ io.on('connection', function (socket) {
     games.startGame(socket, roomCode);
   });
 
+  socket.on('game over', function (roomCode) {
+    games.gameOver(socket, roomCode);
+  });
+
   socket.on('buy item', function (data) {
     games.buyItem(socket, data.roomCode, data.itemId);
   });
