@@ -1,7 +1,7 @@
 var randomstring = require('randomstring');
 
 // This is split between all users
-var pointsPerSecond = 30;
+var pointsPerSecond = 15;
 
 module.exports = function (io) {
   var games = {};
