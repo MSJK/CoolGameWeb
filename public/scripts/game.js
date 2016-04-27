@@ -30,7 +30,8 @@ define('game', ['templates'], function (templates) {
 
       case 'gameover':
         templates.use('gameover', {
-          playerCount: game.players
+          playerCount: game.players,
+          roomCode: game.roomCode
         });
         break;
     }
