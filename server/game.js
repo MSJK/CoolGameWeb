@@ -7,7 +7,7 @@ module.exports = function (io) {
   var games = {};
 
   function generateRoomCode() {
-    return randomstring.generate({length: 4, charset: 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789'});
+    return randomstring.generate({length: 4, charset: 'ABCDEFGHJKLMNPQRSTUVWXYZ'});
   }
 
   function getGame(roomCode) {
