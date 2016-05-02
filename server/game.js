@@ -150,6 +150,7 @@ module.exports = function (io) {
 
       console.log(roomCode + ' game-over\'d')
       game.state.stage = 'gameover';
+      game.state.store = [];
       sendGameState(io.to(gameRoom(game)), game);
       return true;
     },
