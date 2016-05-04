@@ -344,9 +344,9 @@ module.exports = function (io) {
         socket.emit('bad command', roomCode);
         return false;
       }
-
+      var actualAmount = Math.ceil(amount / game.players.length);
       game.players.forEach(function (p) {
-        p.points += amount;
+        p.points += actualAmount;
         var ps = io.sockets.connected[p.id];
         if (ps)
           ps.emit('points update', {roomCode: game.roomCode, points: p.points});
