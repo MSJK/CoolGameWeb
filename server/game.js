@@ -162,6 +162,8 @@ module.exports = function (io) {
         return false;
       }
 
+      checkPlayers(game);
+
       var player = game.players.find(function (p) {
         return p.id == socket.id;
       });
