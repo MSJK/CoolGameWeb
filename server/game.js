@@ -162,7 +162,14 @@ module.exports = function (io) {
         return false;
       }
 
-      var player = {
+      var player = game.players.find(function (p) {
+        return p.id == socket.id;
+      });
+      if (player) {
+        game.players.splice(game.players.indexOf(player), 1);
+      }
+
+      player = {
         id: socket.id,
         points: 0
       };
