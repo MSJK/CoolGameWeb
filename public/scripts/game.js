@@ -92,7 +92,7 @@ define('game', ['templates'], function (templates) {
           console.log(state);
           if (state.state.stage === 'playing' && (game === null || game.state.stage !== 'playing')) {
             if (window.navigator && window.navigator.vibrate) {
-              window.navigator.vibrate(100);
+              window.navigator.vibrate(200);
             }
           }
           game = state;
