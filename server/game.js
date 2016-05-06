@@ -57,7 +57,7 @@ module.exports = function (io) {
       game.players.forEach(function (p) {
         p.points += amt;
         var socket = io.sockets.connected[p.id];
-        if (socket)
+        if (socket && amt > 0)
           socket.emit('points update', {
             roomCode: game.roomCode,
             points: p.points
