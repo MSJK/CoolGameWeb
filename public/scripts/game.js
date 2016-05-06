@@ -90,6 +90,11 @@ define('game', ['templates'], function (templates) {
         socket.on('game state', function (state) {
           console.log('Updated game state:');
           console.log(state);
+          if (state.state.stage === 'playing' && (game === null || game.state.stage !== 'playing')) {
+            if (window.navigator && window.navigator.vibrate) {
+              window.navigator.vibrate(100);
+            }
+          }
           game = state;
           renderState();
         });
